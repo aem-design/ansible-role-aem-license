@@ -27,6 +27,3 @@ galaxy_info:
     - web
     - aemdesign
     - license
-
-dependencies:
-  - aem_design.aem_license
