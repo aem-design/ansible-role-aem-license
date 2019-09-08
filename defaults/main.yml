@@ -1,0 +1,16 @@
+---
+# vars file for .
+
+aem_license_key: ""                                                       # license key submit value
+aem_license_name: "company"                                                      # company name submit value
+aem_license_path: "/system/granite/license/index.html"                    # license page path
+aem_license_console_path: "/system/console/productinfo"                   # license console path, used to check if license worked
+aem_license_eula: "on"                                                    # eula submit value
+aem_license_post_eula: "eula"                                             # eula checkbox field name
+aem_license_post_name: "name"                                             # company name field name
+aem_license_post_key: "id"                                                # key field name
+
+aem_port: "{{ service_aem_port | default('4502') }}"                      # aem service port
+aem_host: "{{ service_aem_host | default('192.168.27.2') }}"              # aem service host
+
+wait_delay: 1                                                             # how long to wait between retries

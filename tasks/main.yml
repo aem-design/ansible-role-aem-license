@@ -1,0 +1,79 @@
+---
+
+- name: "set facts"
+  set_fact:
+    aem_license_url: "http://{{ aem_host }}:{{ aem_port }}{{ aem_license_path }}"
+    aem_license_console_url: "http://{{ aem_host }}:{{ aem_port }}{{ aem_license_console_path }}"
+    aem_registered: false
+    role_comment: "( {{ docker_container_name | default('aem') }} )"
+  tags:
+    - aem-license
+
+- name: wait until aem license console loads {{ role_comment }}
+  debug: msg="{{ aem_license_console_url }}"
+  no_log: "{{ debug_hide }}"
+
+- name: wait for aem service {{ role_comment }}
+  wait_for:
+    host: "{{ aem_host }}"
+    port: "{{ aem_port }}"
+    delay: "{{ wait_delay | default(5) }}"
+  tags:
+    - aem-license
+
+- name: wait until aem license console is ready {{ role_comment }}
+  uri:
+    url: "{{ aem_license_console_url }}"
+    force_basic_auth: true
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
+    return_content: true
+    timeout: 300
+  register: license_console
+  until: license_console.content.find("Installed Products") != -1
+  delay: "{{ wait_delay | default(5) }}"
+  retries: 360
+  tags:
+    - aem-license
+
+- name: check if aem service is not registered {{ role_comment }}
+  set_fact:
+    aem_registered: true
+  when: license_console.content.find("No License configured !") == -1
+  tags:
+    - aem-license
+
+- name: is aem instance registered  {{ role_comment }}
+  debug: msg="{{ aem_registered }}"
+  tags:
+    - aem-license
+
+- name: wait until aem license page is ready {{ role_comment }}
+  uri:
+    url: "{{ aem_license_url }}"
+    return_content: true
+  register: license_page
+  until: license_page.content.find("I have read and accept the End User License Agreement") != -1
+  retries: 360
+  delay: "{{ wait_delay | default(5) }}"
+  when:
+    - aem_registered == false
+  tags:
+    - aem-license
+
+- name: register aem license {{ role_comment }}
+  uri:
+    url: "{{ aem_license_url }}"
+    method: POST
+    return_content: true
+    body: "language=en_US&FormEncoding=utf-8&{{ aem_license_post_eula }}={{ aem_license_eula }}&{{ aem_license_post_name }}={{ aem_license_name }}&{{ aem_license_post_key }}={{ aem_license_key }}"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+  register: license_confirm
+  retries: 180
+  delay: "{{ wait_delay | default(5) }}"
+  ignore_errors: true
+  when:
+    - aem_registered == false
+  tags:
+    - aem-license
