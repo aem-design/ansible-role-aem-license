@@ -29,6 +29,7 @@ Available variables are listed below, along with default values (see `defaults/m
 | aem_host                 	|          	| localhost                                      	| aem service host                                      	|
 |                          	|          	|                                                  	|                                                       	|
 | wait_delay               	|          	| 1                                                	| how long to wait between retries                      	|
+| wait_timeout            	|          	| 1                                                	| how long to wait before terminating                      	|
 
 
 ## Dependencies

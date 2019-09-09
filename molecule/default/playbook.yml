@@ -11,5 +11,6 @@
   roles:
     - {
       role: aem_design.aem_license,
-      debug_hide: false
+      debug_hide: false,
+      wait_timeout: 5
     }

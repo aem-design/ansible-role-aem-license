@@ -18,6 +18,8 @@
     host: "{{ aem_host }}"
     port: "{{ aem_port }}"
     delay: "{{ wait_delay | default(5) }}"
+    timeout: "{{ wait_timeout | default(300) }}"
+  ignore_errors: true
   tags:
     - aem-license
 
