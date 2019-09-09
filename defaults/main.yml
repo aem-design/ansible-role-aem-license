@@ -10,7 +10,7 @@ aem_license_post_eula: "eula"                                             # eula
 aem_license_post_name: "name"                                             # company name field name
 aem_license_post_key: "id"                                                # key field name
 
-aem_port: "{{ service_aem_port | default('4502') }}"                      # aem service port
-aem_host: "{{ service_aem_host | default('192.168.27.2') }}"              # aem service host
+aem_port: "4502"                                                          # aem service port
+aem_host: "localhost"                                                     # aem service host
 
 wait_delay: 1                                                             # how long to wait between retries
