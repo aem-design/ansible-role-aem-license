@@ -12,6 +12,8 @@ aem_license_post_key: "id"                                                # key 
 
 aem_port: "4502"                                                          # aem service port
 aem_host: "localhost"                                                     # aem service host
+aem_username: "admin"
+aem_password: "admin"
 
 wait_delay: 1                                                             # how long to wait between retries
 wait_timeout: 300                                                         # how long to wait before terminating

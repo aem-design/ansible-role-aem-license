@@ -27,6 +27,8 @@ Available variables are listed below, along with default values (see `defaults/m
 |                          	|          	|                                                  	|                                                       	|
 | aem_port                 	|          	| 4502                                           	| aem service port                                      	|
 | aem_host                 	|          	| localhost                                      	| aem service host                                      	|
+| aem_username           	|          	| admin                                             |                                                           |
+| aem_password           	|          	| admin                                             |                                                           |
 |                          	|          	|                                                  	|                                                       	|
 | wait_delay               	|          	| 1                                                	| how long to wait between retries                      	|
 | wait_timeout            	|          	| 1                                                	| how long to wait before terminating                      	|
