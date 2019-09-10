@@ -20,6 +20,7 @@
     delay: "{{ wait_delay | default(5) }}"
     timeout: "{{ wait_timeout | default(300) }}"
   ignore_errors: true
+  register: aem_service
   tags:
     - aem-license
 
@@ -35,6 +36,8 @@
   until: license_console.content.find("Installed Products") != -1
   delay: "{{ wait_delay | default(5) }}"
   retries: 360
+  when:
+    - not aem_service.failed
   tags:
     - aem-license
 
@@ -68,8 +71,7 @@
     url: "{{ aem_license_url }}"
     method: POST
     return_content: true
-    body: >-
-      language=en_US&FormEncoding=utf-8
+    body: language=en_US&FormEncoding=utf-8
       &{{ aem_license_post_eula }}={{ aem_license_eula }}
       &{{ aem_license_post_name }}={{ aem_license_name }}
       &{{ aem_license_post_key }}={{ aem_license_key }}
