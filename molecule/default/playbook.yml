@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: instance
   become: true
 
   pre_tasks:
@@ -8,13 +8,22 @@
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
 
+    - name: get docker host ip
+      become: yes
+      shell: /sbin/ip route | awk '/default/ { print $3 }'
+      register: dockerhost_ip
+      
+    - name: get docker host ip
+      debug:
+        msg:
+          - "{{ dockerhost_ip.stdout }}"
+
   roles:
     - {
-      role: aem_design.aem_license,
-      aem_license_key: "your key",
-      aem_license_name: "your company",
-      aem_port: "4502",
-      aem_host: "localhost",
-      debug_hide: false,
-      wait_timeout: 5
+      role: ansible-role-aem-license,
+      aem_license_key: "{{ aem_license_key }}",
+      aem_license_name: "{{ aem_license_name }}",
+      aem_port: "5502",
+      aem_host: "{{ dockerhost_ip.stdout }}",
+      debug_hide: false
     }
