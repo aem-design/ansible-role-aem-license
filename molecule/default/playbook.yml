@@ -11,6 +11,10 @@
   roles:
     - {
       role: aem_design.aem_license,
+      aem_license_key: "your key",
+      aem_license_name: "your company",
+      aem_port: "4502",
+      aem_host: "localhost",
       debug_hide: false,
       wait_timeout: 5
     }
