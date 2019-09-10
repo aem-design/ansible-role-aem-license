@@ -31,7 +31,7 @@
     user: "{{ aem_username }}"
     password: "{{ aem_password }}"
     return_content: true
-    timeout: 300
+    timeout: 5
   register: license_console
   until: license_console.content.find("Installed Products") != -1
   delay: "{{ wait_delay | default(5) }}"
@@ -49,7 +49,10 @@
     - aem-license
 
 - name: is aem instance registered  {{ role_comment }}
-  debug: msg="{{ aem_registered }}"
+  debug:
+    msg:
+      - "{{ aem_registered }}"
+      - "{{ aem_license_url }}"
   tags:
     - aem-license
 
@@ -62,7 +65,7 @@
   retries: 360
   delay: "{{ wait_delay | default(5) }}"
   when:
-    - aem_registered
+    - not aem_registered
   tags:
     - aem-license
 
@@ -71,10 +74,10 @@
     url: "{{ aem_license_url }}"
     method: POST
     return_content: true
-    body: language=en_US&FormEncoding=utf-8
-      &{{ aem_license_post_eula }}={{ aem_license_eula }}
-      &{{ aem_license_post_name }}={{ aem_license_name }}
-      &{{ aem_license_post_key }}={{ aem_license_key }}
+    body: "language=en_US&FormEncoding=utf-8\
+      &{{ aem_license_post_eula }}={{ aem_license_eula }}\
+      &{{ aem_license_post_name }}={{ aem_license_name }}\
+      &{{ aem_license_post_key }}={{ aem_license_key }}"
     headers:
       Content-Type: "application/x-www-form-urlencoded"
   register: license_confirm
@@ -82,6 +85,6 @@
   delay: "{{ wait_delay | default(5) }}"
   ignore_errors: true
   when:
-    - aem_registered
+    - not aem_registered
   tags:
     - aem-license
