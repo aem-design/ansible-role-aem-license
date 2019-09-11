@@ -1,6 +1,6 @@
 ---
 
-- name: "set facts"
+- name: set facts
   set_fact:
     aem_license_url: "http://{{ aem_host }}:{{ aem_port }}{{ aem_license_path }}"
     aem_license_console_url: "http://{{ aem_host }}:{{ aem_port }}{{ aem_license_console_path }}"
