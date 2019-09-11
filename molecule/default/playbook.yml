@@ -16,6 +16,7 @@
       args:
         executable: /bin/bash
       register: dockerhost_ip
+      changed_when: false
 
   roles:
     - {
