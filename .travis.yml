@@ -23,6 +23,7 @@ before_install:
   - echo ROLE_REPO_NAME=${ROLE_REPO_NAME}
   - echo ROLE_NAME=${ROLE_NAME}
   - echo ROLE_NAMESPACE=${ROLE_NAMESPACE}
+  - echo MOLECULE_ROLE_NAME=${MOLECULE_ROLE_NAME}
 
 
 install:
@@ -33,7 +34,7 @@ before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
   - mv ansible-role-$ROLE_REPO_NAME $MOLECULE_ROLE_NAME
-  - cd $ROLE_NAMESPACE.$ROLE_NAME
+  - cd $MOLECULE_ROLE_NAME
 
 script:
   # Run tests.
