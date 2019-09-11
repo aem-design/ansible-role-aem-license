@@ -20,7 +20,7 @@
 
   roles:
     - {
-      role: "{{ molecule_role_name | default('ansible-role-aem-license') }}",
+      role: "{{ role_name | default('ansible-role-aem-license') }}",
       aem_license_key: "{{ service_aem_license_key }}",
       aem_license_name: "{{ service_aem_license_name }}",
       aem_port: "5502",
