@@ -10,13 +10,12 @@
 
     - name: get docker host ip
       become: yes
-      shell: /sbin/ip route | awk '/default/ { print $3 }'
+      shell: |
+        set -o pipefail
+        /sbin/ip route | awk '/default/ { print $3 }'
+      args:
+        executable: /bin/bash
       register: dockerhost_ip
-      
-    - name: get docker host ip
-      debug:
-        msg:
-          - "{{ dockerhost_ip.stdout }}"
 
   roles:
     - {
