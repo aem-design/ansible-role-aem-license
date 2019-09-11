@@ -8,11 +8,22 @@
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
 
+    - name: set role name
+      set_fact:
+        role_name: "{{ lookup('env','ROLE_NAME_FULL') }}"
+        role_name1: "{{ lookup('env','ROLE_NAME_FULL') }}"
+      when:
+        - lookup('env','ROLE_NAME_FULL')
+
+
+
     - name: debug
       debug:
         msg:
           - role_name var {{ role_name }}
-          - role_name env "{{ lookup('env','ROLE_NAME_FULL') }}"
+          - role_name env {{ lookup('env','ROLE_NAME_FULL') }}"
+          - role_name1 env {{ role_name1 }}"
+
 
     - name: get docker host ip
       become: yes
