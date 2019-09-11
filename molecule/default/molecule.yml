@@ -19,6 +19,7 @@ provisioner:
       all:
         service_aem_license_key: ${AEM_NAME}
         service_aem_license_name: ${AEM_KEY}
+        molecule_role_name: ${MOLECULE_ROLE_NAME}
 platforms:
   - name: instance
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
