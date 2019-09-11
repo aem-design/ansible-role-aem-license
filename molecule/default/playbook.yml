@@ -2,30 +2,14 @@
 - name: Converge
   hosts: instance
   become: true
+  vars:
+    local_role_name: "ansible-role-aem-license"
+    role_name: "{% if lookup('env','ROLE_NAME_FULL') %}{{ lookup('env','ROLE_NAME_FULL') }}{% else %}{{ local_role_name }}{% endif %}"
 
   pre_tasks:
     - name: Update apt cache.
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
-
-#    - name: set role name
-#      set_fact:
-#        role_name: "ansible-role-aem-license"
-#      when:
-#        - not lookup('env','ROLE_NAME_FULL')
-#
-#    - name: set role name
-#      set_fact:
-#        role_name: "{{ lookup('env','ROLE_NAME_FULL') }}"
-#      when:
-#        - lookup('env','ROLE_NAME_FULL')
-
-    - name: debug
-      debug:
-        msg:
-          - role_name var {{ role_name }}
-          - role_name env {{ lookup('env','ROLE_NAME_FULL') }}
-
 
     - name: get docker host ip
       become: yes
@@ -39,7 +23,7 @@
 
   roles:
     - {
-      role: "{{ role_name | default('ansible-role-aem-license') }}",
+      role: "{{ role_name }}",
       aem_license_key: "{{ service_aem_license_key }}",
       aem_license_name: "{{ service_aem_license_name }}",
       aem_port: "5502",
