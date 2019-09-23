@@ -74,17 +74,25 @@
     url: "{{ aem_license_url }}"
     method: POST
     return_content: true
-    body: "language=en_US&FormEncoding=utf-8\
-      &{{ aem_license_post_eula }}={{ aem_license_eula }}\
-      &{{ aem_license_post_name }}={{ aem_license_name }}\
-      &{{ aem_license_post_key }}={{ aem_license_key }}"
-    headers:
-      Content-Type: "application/x-www-form-urlencoded"
+    body_format: "form-urlencoded"
+    body:
+      - [ language, en_US ]
+      - [ FormEncoding, utf-8 ]
+      - [ "{{ aem_license_post_eula }}", "{{ aem_license_eula }}" ]
+      - [ "{{ aem_license_post_name }}", "{{ aem_license_name }}" ]
+      - [ "{{ aem_license_post_key }}", "{{ aem_license_key }}" ]
   register: license_confirm
   retries: 180
   delay: "{{ wait_delay | default(5) }}"
   ignore_errors: true
   when:
     - not aem_registered
+  tags:
+    - aem-license
+
+- name: check registration worked {{ role_comment }}
+  fail:
+    msg: Could not register AEM instance
+  when: license_confirm.content.find("I have read and accept the End User License Agreement") != -1
   tags:
     - aem-license
