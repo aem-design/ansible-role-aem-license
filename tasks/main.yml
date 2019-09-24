@@ -93,6 +93,8 @@
 - name: check registration worked {{ role_comment }}
   fail:
     msg: Could not register AEM instance
-  when: license_confirm.content.find("I have read and accept the End User License Agreement") != -1
+  when:
+    - not aem_registered
+    - license_confirm.content.find("I have read and accept the End User License Agreement") != -1
   tags:
     - aem-license
