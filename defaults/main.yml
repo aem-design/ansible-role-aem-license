@@ -21,5 +21,5 @@ wait_timeout: 300                                                         # how 
 license_page_test: "I have read and accept the End User License Agreement" # string to search for in license page to verify that its actual license page
 license_page_test_error_license: "markField('license');"                   # string to search for in license page to check if error is with license
 license_page_test_error_name: "markField('name');"                      # string to search for in license page to check if error is with key
-license_console_test_nolicense: "No License configured !"                  # string to search for in license console page to verify that license does not exist
+license_console_test_nolicense: "No License configured"                  # string to search for in license console page to verify that license does not exist
 license_console_test_ready: "Installed Products"                           # string to search for in license console page to verify that license console is ready
