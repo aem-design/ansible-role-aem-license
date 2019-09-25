@@ -9,6 +9,16 @@
   tags:
     - aem-license
 
+- name: process role with parameters parameters {{ package_comment }}{{ role_comment }}
+  debug:
+    msg:
+      - "aem_license_name: {% if aem_license_name %}{{ aem_license_name }}{% else %}not set{% endif %}"
+      - "aem_license_key: {% if aem_license_key %}set{% else %}not set{% endif %}"
+      - "aem_port: {{ aem_port }}"
+      - "aem_host: {{ aem_host }}"
+  tags:
+    - always
+
 - name: wait until aem license console loads {{ role_comment }}
   debug: msg="{{ aem_license_console_url }}"
   no_log: "{{ debug_hide }}"
@@ -33,7 +43,7 @@
     return_content: true
     timeout: 5
   register: license_console
-  until: license_console.content.find("Installed Products") != -1
+  until: license_console_test_ready in license_console.content
   delay: "{{ wait_delay | default(5) }}"
   retries: 360
   when:
@@ -44,15 +54,15 @@
 - name: check if aem service is not registered {{ role_comment }}
   set_fact:
     aem_registered: true
-  when: license_console.content.find("No License configured !") == -1
+  when: license_console_test_nolicense not in license_console.content
   tags:
     - aem-license
 
 - name: is aem instance registered  {{ role_comment }}
   debug:
     msg:
-      - "{{ aem_registered }}"
-      - "{{ aem_license_url }}"
+      - "is aem registered: {{ aem_registered }}"
+      - "aem license url: {{ aem_license_url }}"
   tags:
     - aem-license
 
@@ -61,7 +71,7 @@
     url: "{{ aem_license_url }}"
     return_content: true
   register: license_page
-  until: license_page.content.find("I have read and accept the End User License Agreement") != -1
+  until: license_page_test in license_page.content
   retries: 360
   delay: "{{ wait_delay | default(5) }}"
   when:
@@ -90,11 +100,23 @@
   tags:
     - aem-license
 
+- name: check error with registration {{ role_comment }}
+  debug:
+    msg:
+      - "name error:    {{ license_page_test_error_name in license_confirm.content }}"
+      - "license error: {{ license_page_test_error_license in license_confirm.content }}"
+  when:
+    - not aem_registered
+    - license_page_test in license_confirm.content
+  tags:
+    - aem-license
+
 - name: check registration worked {{ role_comment }}
   fail:
     msg: Could not register AEM instance
   when:
     - not aem_registered
-    - license_confirm.content.find("I have read and accept the End User License Agreement") != -1
+    - license_page_test in license_confirm.content
   tags:
     - aem-license
+    
