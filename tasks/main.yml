@@ -54,7 +54,9 @@
 - name: check if aem service is not registered {{ role_comment }}
   set_fact:
     aem_registered: true
-  when: license_console_test_nolicense not in license_console.content
+  when:
+    - license_console.content is defined
+    - license_console_test_nolicense not in license_console.content
   tags:
     - aem-license
 
