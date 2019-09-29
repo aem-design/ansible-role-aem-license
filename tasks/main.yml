@@ -9,7 +9,7 @@
   tags:
     - aem-license
 
-- name: process role with parameters parameters {{ package_comment }}{{ role_comment }}
+- name: process role with parameters parameters {{ role_comment }}
   debug:
     msg:
       - "aem_license_name: {% if aem_license_name %}{{ aem_license_name }}{% else %}not set{% endif %}"
