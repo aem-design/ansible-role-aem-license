@@ -32,6 +32,8 @@ Available variables are listed below, along with default values (see `defaults/m
 |                          	|          	|                                                  	|                                                       	|
 | wait_delay               	|          	| 1                                                	| how long to wait between retries                      	|
 | wait_timeout            	|          	| 1                                                	| how long to wait before terminating                      	|
+| wait_retries            	|          	| 1                                                	| how many times to retry waiting                        	|
+|                          	|          	|                                                  	|                                                       	|
 
 
 ## Dependencies

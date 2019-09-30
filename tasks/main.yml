@@ -74,7 +74,7 @@
     return_content: true
   register: license_page
   until: license_page_test in license_page.content
-  retries: 360
+  retries: "{{ wait_retries | default(360) }}"
   delay: "{{ wait_delay | default(5) }}"
   when:
     - not aem_registered
