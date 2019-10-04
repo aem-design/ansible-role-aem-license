@@ -19,6 +19,15 @@
   tags:
     - always
 
+- name: fail if registraion info is not set {{ role_comment }}
+  fail:
+    msg: License Name and Key not provided
+  when:
+    - not aem_license_name
+    - not aem_license_key
+  tags:
+    - always
+
 - name: wait until aem license console loads {{ role_comment }}
   debug: msg="{{ aem_license_console_url }}"
   no_log: "{{ debug_hide }}"
