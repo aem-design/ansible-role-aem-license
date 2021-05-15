@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: aem-license
+  role_name: aem_license
   author: Max Barrass
   description: Install license to an AEM Instance.
   company: aem.design
